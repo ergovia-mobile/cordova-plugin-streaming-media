@@ -3,23 +3,17 @@ package com.hutchind.cordova.plugins.streamingmedia;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.media.MediaPlayer;
-import android.widget.MediaController;
+import android.widget.*;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.view.MotionEvent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Display;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.MediaController;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.VideoView;
 
 public class SimpleVideoStream extends Activity implements
 	MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedListener,
@@ -31,6 +25,7 @@ public class SimpleVideoStream extends Activity implements
 	private ProgressBar mProgressBar = null;
 	private String mVideoUrl;
 	private Boolean mShouldAutoClose = true;
+	private SeekBar mSeekbar = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -143,9 +138,13 @@ public class SimpleVideoStream extends Activity implements
 	}
 
 	public void onCompletion(MediaPlayer mp) {
-		stop();
 		if (mShouldAutoClose) {
+			stop();
 			wrapItUp(RESULT_OK, null);
+		} else {
+			pause();
+			mVideoView.seekTo(0);
+			mMediaPlayer.seekTo(0);
 		}
 	}
 
@@ -189,12 +188,5 @@ public class SimpleVideoStream extends Activity implements
 	public void onConfigurationChanged(Configuration newConfig) {
 		// The screen size changed or the orientation changed... don't restart the activity
 		super.onConfigurationChanged(newConfig);
-	}
-
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		if (mMediaController != null)
-			mMediaController.show();
-		return false;
 	}
 }
