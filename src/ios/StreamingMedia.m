@@ -178,6 +178,7 @@ NSString * const DEFAULT_IMAGE_SCALE = @"center";
     }
 
 	moviePlayer =  [[MPMoviePlayerController alloc] initWithContentURL:url];
+	moviePlayer.movieSourceType = MPMovieSourceTypeStreaming;
 
 	// Listen for playback finishing
 	[[NSNotificationCenter defaultCenter] addObserver:self
